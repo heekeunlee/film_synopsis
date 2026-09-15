@@ -107,7 +107,10 @@ def main():
             count = len(journal_entries())
         else:
             count = sum(len(work_files(f)) for f in member["outputs"])
-        last = git("log", "-1", "--format=%cs", "--", *member["outputs"]) or None
+        # 빈 폴더용 .gitkeep, 템플릿, README 커밋은 작업으로 치지 않는다
+        pathspecs = [f":(glob){f}/**/*.md" for f in member["outputs"]]
+        last = git("log", "-1", "--format=%cs", "--", *pathspecs,
+                   ":(exclude,glob)**/_*.md", ":(exclude,glob)**/README.md") or None
         crew.append({**member, "active": agent_file.exists(), "model": fm.get("model", "기본"),
                      "count": count, "last_activity": last})
 
