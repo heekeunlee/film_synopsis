@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>영화 기획실 · film_synopsis</title>
+<meta name="description" content="사람 작가 한 명과 AI 크루 아홉이 제1회 대한민국 AI창작문학상 영화 부문 응모작을 만드는 기획실">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #121110;
+    --ink-2: #1b1917;
+    --ink-3: #26231f;
+    --line: #37322b;
+    --paper: #efe7d6;
+    --paper-2: #e3d9c3;
+    --paper-ink: #1d1a16;
+    --muted: #9d9486;
+    --text: #e9e2d4;
+    --amber: #e8a33d;
+    --amber-soft: rgba(232, 163, 61, .14);
+    --red: #d8543f;
+    --green: #7fb07a;
+    --serif: "Noto Serif KR", "AppleMyungjo", "Nanum Myeongjo", serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--ink); }
+  body {
+    margin: 0; background: var(--ink); color: var(--text);
+    font: 15px/1.65 var(--sans); word-break: keep-all;
+    padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; }
+
+  /* 필름 퍼포레이션 */
+  .sprockets {
+    height: 22px; background:
+      radial-gradient(circle at 50% 50%, var(--ink) 0 0) ,
+      repeating-linear-gradient(90deg, transparent 0 14px, var(--ink) 14px 26px, transparent 26px 40px) center/40px 10px repeat-x,
+      #0a0908;
+    border-block: 1px solid #000;
+  }
+
+  header.hero { padding-block: 56px 40px; position: relative; overflow: hidden; }
+  header.hero::after {
+    content: ""; position: absolute; inset: -40% -10% auto auto; width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(232,163,61,.18), transparent 65%); pointer-events: none;
+  }
+  .kicker { font: 600 12px/1 var(--mono); letter-spacing: .22em; color: var(--amber); text-transform: uppercase; }
+  .rec { display: inline-flex; align-items: center; gap: 8px; }
+  .rec::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--red); box-shadow: 0 0 10px var(--red); }
+  h1 { font: 900 clamp(40px, 8vw, 76px)/1.05 var(--serif); margin: 16px 0 12px; letter-spacing: -.02em; }
+  .lede { max-width: 640px; color: #cfc6b6; font-size: 17px; margin: 0; }
+  .lede strong { color: var(--paper); }
+
+  /* 슬레이트 (D-day) */
+  .slate { margin-top: 32px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--ink-2); }
+  .slate::before {
+    content: ""; grid-column: 1 / -1; height: 14px;
+    background: repeating-linear-gradient(-45deg, var(--paper) 0 14px, var(--ink) 14px 28px);
+  }
+  .slate > div { padding: 14px 16px; border-right: 1px solid var(--line); }
+  .slate > div:last-child { border-right: 0; }
+  .slate .lbl { font: 600 11px/1.2 var(--mono); letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+  .slate .d { font: 700 30px/1.2 var(--mono); color: var(--paper); margin-top: 6px; }
+  .slate .date { font: 12px/1.3 var(--mono); color: var(--muted); }
+  .slate .hot .d { color: var(--amber); }
+
+  section { padding-block: 44px; border-top: 1px solid var(--line); }
+  .sec-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; margin-bottom: 22px; }
+  h2 { font: 700 28px/1.2 var(--serif); margin: 6px 0 0; }
+  .sec-note { color: var(--muted); font-size: 14px; max-width: 520px; margin: 0; }
+
+  /* 스탯 */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .stat { background: var(--ink-2); padding: 16px 18px; }
+  .stat .n { font: 700 28px/1.1 var(--mono); color: var(--paper); }
+  .stat .n small { font-size: 14px; color: var(--muted); font-weight: 400; }
+  .stat .l { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* 콜시트 */
+  .showrunner {
+    display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center;
+    background: linear-gradient(135deg, var(--amber-soft), transparent 70%), var(--ink-2);
+    border: 1px solid var(--amber); border-radius: 8px; padding: 20px 22px; margin-bottom: 18px;
+  }
+  .showrunner .icon { font-size: 40px; width: 64px; height: 64px; display: grid; place-items: center; background: var(--ink); border-radius: 50%; border: 1px solid var(--amber); }
+  .showrunner h3 { margin: 0; font: 700 22px/1.3 var(--serif); }
+  .showrunner p { margin: 4px 0 0; color: #d8cfbf; }
+  .tag { display: inline-block; font: 600 11px/1 var(--mono); letter-spacing: .08em; padding: 5px 8px; border-radius: 3px; background: var(--amber); color: var(--ink); vertical-align: middle; margin-left: 8px; }
+
+  .crew { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--paper); color: var(--paper-ink); border-radius: 4px; padding: 0;
+    box-shadow: 0 1px 0 rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35); display: flex; flex-direction: column;
+  }
+  .card .top { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px; border-bottom: 1.5px dashed #b9ac93; font: 600 11px/1 var(--mono); letter-spacing: .1em; color: #6d6353; text-transform: uppercase; }
+  .card .status { display: inline-flex; align-items: center; gap: 6px; }
+  .card .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #b3a88f; }
+  .card .status.on::before { background: #3f8a3a; box-shadow: 0 0 6px #3f8a3a; }
+  .card .body { padding: 14px 14px 12px; flex: 1; }
+  .card .who { display: flex; gap: 12px; align-items: center; }
+  .card .avatar { font-size: 26px; width: 48px; height: 48px; flex: none; display: grid; place-items: center; background: var(--paper-2); border-radius: 50%; border: 1px solid #c9bda5; }
+  .card h3 { margin: 0; font: 700 19px/1.2 var(--serif); }
+  .card .en { font: 12px/1.2 var(--mono); color: #7a705f; }
+  .card .role { font-size: 13px; color: #5b5244; margin-top: 2px; }
+  .card .does { margin: 12px 0 0; font-size: 14px; line-height: 1.6; }
+  .card details { margin-top: 10px; font-size: 13px; color: #5b5244; }
+  .card summary { cursor: pointer; font: 600 11px/1.6 var(--mono); letter-spacing: .08em; color: #7a705f; text-transform: uppercase; }
+  .card details p { margin: 6px 0 0; }
+  .card .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; padding: 10px 14px 12px; border-top: 1px solid #d3c7ae; }
+  .cmd { font: 600 13px/1 var(--mono); background: var(--paper-ink); color: var(--paper); padding: 6px 8px; border-radius: 3px; }
+  .model { font: 11px/1 var(--mono); color: #7a705f; margin-left: 6px; }
+  .count { text-align: right; }
+  .count b { font: 700 22px/1 var(--mono); }
+  .count span { display: block; font-size: 11px; color: #7a705f; margin-top: 2px; }
+
+  /* 공정 */
+  .pipeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: step; }
+  .pipeline li { display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); position: relative; }
+  .pipeline li::before { counter-increment: step; content: counter(step, decimal-leading-zero); font: 600 13px/1 var(--mono); color: var(--muted); }
+  .pipeline .what b { color: var(--paper); font-weight: 600; }
+  .pipeline .what span { color: var(--muted); font-size: 14px; margin-left: 6px; }
+  .pipeline .gate { background: var(--amber-soft); border-radius: 4px; padding-inline: 10px; border-bottom-color: transparent; margin-block: 2px; }
+  .pipeline .gate::before { content: "◆"; counter-increment: none; color: var(--amber); font-size: 16px; }
+  .pipeline .gate .what b { color: var(--amber); }
+  .pipeline .gate .who-cell { display: none; }
+  .pipeline code { font: 600 13px/1 var(--mono); color: var(--amber); }
+  .loop { color: var(--muted); font: 12px/1 var(--mono); }
+
+  /* 진행 · 일지 */
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+  .checklist { list-style: none; margin: 0; padding: 0; }
+  .checklist li { padding: 9px 0 9px 30px; position: relative; border-bottom: 1px solid var(--line); color: var(--muted); }
+  .checklist li::before { content: ""; position: absolute; left: 0; top: 12px; width: 16px; height: 16px; border: 1.5px solid var(--line); border-radius: 3px; }
+  .checklist li.done { color: var(--text); }
+  .checklist li.done::before { background: var(--amber); border-color: var(--amber); }
+  .checklist li.done::after { content: "✓"; position: absolute; left: 3px; top: 8px; color: var(--ink); font-weight: 700; font-size: 13px; }
+  .bar { height: 6px; background: var(--ink-3); border-radius: 3px; overflow: hidden; margin: 4px 0 14px; }
+  .bar i { display: block; height: 100%; background: var(--amber); }
+
+  .log { list-style: none; margin: 0; padding: 0; }
+  .log li { border-bottom: 1px solid var(--line); }
+  .log a { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 10px 0; text-decoration: none; }
+  .log a:hover .t { color: var(--amber); }
+  .log .d { font: 13px/1.5 var(--mono); color: var(--muted); }
+  .log .t { color: var(--text); }
+  h3.sub { font: 600 12px/1 var(--mono); letter-spacing: .14em; color: var(--muted); text-transform: uppercase; margin: 0 0 10px; }
+  .empty { color: var(--muted); font-style: italic; padding: 10px 0; }
+
+  footer { border-top: 1px solid var(--line); padding-block: 36px 56px; color: var(--muted); font-size: 14px; }
+  footer p { max-width: 720px; margin: 0 0 10px; }
+  footer .links { display: flex; flex-wrap: wrap; gap: 8px 20px; font: 13px/1.4 var(--mono); }
+  .error { background: #3a1d17; border: 1px solid var(--red); color: #f3c9bf; padding: 12px 14px; border-radius: 6px; margin-top: 20px; }
+
+  @media (max-width: 720px) {
+    body { font-size: 14.5px; }
+    header.hero { padding-block: 40px 28px; }
+    .slate { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .slate > div:nth-child(2n) { border-right: 0; }
+    .slate > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .slate .d { font-size: 24px; }
+    .pipeline li { grid-template-columns: 32px 1fr; }
+    .pipeline li > .who-cell { grid-column: 2; font-size: 13px; }
+    .log a { grid-template-columns: 1fr; gap: 0; }
+    section { padding-block: 34px; }
+  }
+</style>
+</head>
+<body>
+<div class="sprockets" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker rec">film_synopsis · writers' room</div>
+    <h1>영화 기획실</h1>
+    <p class="lede"><strong>사람 작가 한 명과 AI 크루 아홉</strong>이 제1회 대한민국 AI창작문학상 영화 부문에 낼 원천 스토리 한 편을 만드는 방입니다. 크루는 제안하고, 쓰고, 비평하고, 기록합니다. 결정은 작가가 합니다.</p>
+    <div class="slate" id="slate" aria-label="주요 일정"></div>
+    <div id="error" hidden class="error"></div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="kicker">production report</div><h2>지금까지 쌓인 것</h2></div>
+        <p class="sec-note" id="generated"></p>
+      </div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="kicker">call sheet</div><h2>오늘의 콜시트</h2></div>
+        <p class="sec-note">이름과 경력은 캐릭터 설정이에요. 실제로는 전부 Claude Code 서브에이전트이고, 숫자는 저장소의 실제 파일에서 셉니다.</p>
+      </div>
+      <div class="showrunner" id="showrunner"></div>
+      <div class="crew" id="crew"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="kicker">pipeline</div><h2>일하는 순서</h2></div>
+        <p class="sec-note">◆ 표시는 작가만 통과시킬 수 있는 관문이에요. 자동으로 흘러가지 않고, 사람이 커맨드를 불러야 다음 방에 불이 켜집니다.</p>
+      </div>
+      <ol class="pipeline" id="pipeline"></ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap two">
+      <div>
+        <div class="kicker">progress</div><h2 style="margin-bottom:14px">진행 현황</h2>
+        <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+        <ul class="checklist" id="progress"></ul>
+      </div>
+      <div>
+        <div class="kicker">making-of</div><h2 style="margin-bottom:14px">창작 일지</h2>
+        <ul class="log" id="journal"></ul>
+        <h3 class="sub" style="margin-top:28px">최근 커밋</h3>
+        <ul class="log" id="commits"></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>🎬 이 기획실에는 근무시간표가 없습니다. 작가가 슬래시 커맨드로 문을 두드려야 방에 불이 켜지고, 활동이 없으면 0으로 보입니다. 자동으로 돌아가는 것처럼 꾸미지 않습니다.</p>
+    <p>동화 공방(fairy_tale)의 크루 구조를 영화 공모전에 맞게 옮겨 왔습니다.</p>
+    <div class="links">
+      <a id="repo-link" href="https://github.com/heekeunlee/film_synopsis">저장소 →</a>
+      <a href="https://github.com/heekeunlee/film_synopsis/blob/main/%EA%B8%B0%ED%9A%8D%EC%A0%84%EB%9E%B5.md">기획전략 →</a>
+      <a href="https://github.com/heekeunlee/film_synopsis/blob/main/CLAUDE.md">기획실 도면 →</a>
+      <a href="https://github.com/heekeunlee/fairy_tale_office">동화 공방 →</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  const PIPELINE = [
+    { cmd: "/research", what: "시장 동향과 유사작 조사", who: "researcher", opt: true },
+    { cmd: "/plan 발굴", what: "로그라인 후보 15~20개, 추천 3개", who: "planner" },
+    { gate: true, what: "로그라인 선택", note: "작가가 고른다" },
+    { cmd: "/plan <로그라인>", what: "캐릭터·3막 구조·결말까지 기획서", who: "planner" },
+    { gate: true, what: "기획서 확정", note: "작가가 검토하고 고친다" },
+    { cmd: "/write", what: "A4 3~5매 기획안 AI 초안", who: "writer" },
+    { cmd: "/review", what: "심사 기준 모의 채점", who: "critic", loop: "수정 필요 → /write 반복" },
+    { gate: true, what: "직접 퇴고", note: "제출본은 작가 수정본(-author)" },
+    { cmd: "/consult", what: "프로듀서 관점 검토", who: "advisor" },
+    { cmd: "/visual · /pitch", what: "포스터 프롬프트, 피칭 자료", who: ["designer", "pitcher"] },
+    { cmd: "/promptnote", what: "일지와 결정로그로 프롬프트 노트 초안", who: "recorder" },
+    { gate: true, what: "프롬프트 노트 확정", note: "회고는 작가가 쓴다" },
+    { cmd: "/audit", what: "실제 매수, 일정, 제출 체크리스트", who: "admin" },
+    { gate: true, what: "이메일 제출", note: "목표 11/25 · 마감 11/30" },
+  ];
+
+  function kstToday() {
+    const now = new Date(Date.now() + 9 * 3600 * 1000);
+    return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  }
+  function dday(iso) {
+    const [y, m, d] = iso.split("-").map(Number);
+    const diff = Math.round((Date.UTC(y, m - 1, d) - kstToday()) / 86400000);
+    return diff > 0 ? "D-" + diff : diff === 0 ? "D-DAY" : "D+" + -diff;
+  }
+  const fmt = (iso) => iso.replace(/^(\d{4})-(\d{2})-(\d{2})$/, "$1.$2.$3");
+
+  function render(data) {
+    const blob = (p) => `https://github.com/${data.repo}/blob/main/${p.split("/").map(encodeURIComponent).join("/")}`;
+    const byAgent = Object.fromEntries(data.crew.map((c) => [c.agent, c]));
+    const dt = data.dates;
+
+    $("slate").innerHTML = [
+      ["접수 시작", dt.open], ["제출 목표", dt.target, true], ["접수 마감", dt.deadline], ["당선 발표", dt.result],
+    ].map(([l, d, hot]) => `<div class="${hot ? "hot" : ""}"><div class="lbl">${l}</div><div class="d">${dday(d)}</div><div class="date">${fmt(d)}</div></div>`).join("");
+
+    const c = data.counts;
+    const r = data.latest_review;
+    $("stats").innerHTML = [
+      [c.journal, "", "창작 일지"],
+      [c.decisions, "", "기록된 결정"],
+      [c.ideas + c.planning, "", "로그라인 후보·기획서"],
+      [c.drafts_ai, `<small> / 작가 ${c.drafts_author}</small>`, "AI 초안 / 작가 수정본"],
+      [r && r.score != null ? r.score : "–", r && r.score != null ? "<small>/100</small>" : "", r ? `최근 모의 심사 · ${esc(r.verdict)}` : "모의 심사 아직 없음"],
+      [c.commits, "", "커밋"],
+    ].map(([n, extra, l]) => `<div class="stat"><div class="n">${n}${extra}</div><div class="l">${l}</div></div>`).join("");
+
+    const gen = new Date(data.generated_at);
+    $("generated").textContent = `저장소 기준 ${gen.toLocaleString("ko-KR", { timeZone: "Asia/Seoul", dateStyle: "medium", timeStyle: "short" })} 집계`;
+
+    const s = data.showrunner;
+    $("showrunner").innerHTML = `<div class="icon" aria-hidden="true">${s.icon}</div>
+      <div><h3>${esc(s.name)} <span class="tag">${esc(s.role)}</span></h3><p>${esc(s.does)}</p><p style="color:var(--muted);font-size:14px">${esc(s.bio)}</p></div>`;
+
+    $("crew").innerHTML = data.crew.map((m) => {
+      const working = m.last_activity || m.count > 0;
+      const status = !m.active ? "준비 중" : working ? `최근 작업 ${m.last_activity ? fmt(m.last_activity) : ""}` : "대기 중";
+      return `<article class="card">
+        <div class="top"><span>${esc(m.room)}</span><span class="status ${working ? "on" : ""}">${esc(status)}</span></div>
+        <div class="body">
+          <div class="who"><div class="avatar" aria-hidden="true">${m.icon}</div>
+            <div><h3>${esc(m.name)}</h3><div class="en">${esc(m.en)}</div><div class="role">${esc(m.role)}</div></div></div>
+          <p class="does">${esc(m.does)}</p>
+          <details><summary>인사기록</summary><p>${esc(m.bio)}</p></details>
+        </div>
+        <div class="foot"><div><span class="cmd">${esc(m.command)}</span><span class="model">${m.model === "기본" ? "sonnet" : esc(m.model)}</span></div>
+          <div class="count"><b>${m.count}</b><span>${esc(m.unit)}</span></div></div>
+      </article>`;
+    }).join("");
+
+    $("pipeline").innerHTML = PIPELINE.map((st) => {
+      if (st.gate) return `<li class="gate"><div class="what"><b>작가: ${esc(st.what)}</b><span>${esc(st.note)}</span></div><div class="who-cell"></div></li>`;
+      const who = [].concat(st.who).map((a) => byAgent[a] ? byAgent[a].name : a).join(" · ");
+      return `<li><div class="what"><code>${esc(st.cmd)}</code><span>${esc(st.what)}${st.opt ? " (선택)" : ""}</span>${st.loop ? `<div class="loop">↺ ${esc(st.loop)}</div>` : ""}</div><div class="who-cell" style="color:var(--muted)">${esc(who)}</div></li>`;
+    }).join("");
+
+    const prog = data.progress;
+    const done = prog.filter((p) => p.done).length;
+    $("bar").style.width = prog.length ? (done / prog.length * 100) + "%" : "0";
+    $("progress").innerHTML = prog.length
+      ? prog.map((p) => `<li class="${p.done ? "done" : ""}">${esc(p.label)}</li>`).join("")
+      : `<li class="empty">README에 진행 현황이 없어요</li>`;
+
+    $("journal").innerHTML = data.journal.length
+      ? data.journal.map((j) => `<li><a href="${blob(j.path)}"><span class="d">${fmt(j.date)} #${String(j.session).padStart(2, "0")}</span><span class="t">${esc(j.title)}</span></a></li>`).join("")
+      : `<li class="empty">아직 일지가 없어요</li>`;
+
+    $("commits").innerHTML = data.commits.length
+      ? data.commits.slice(0, 6).map((k) => `<li><a href="https://github.com/${data.repo}/commits/main"><span class="d">${fmt(k.date)}</span><span class="t">${esc(k.message)}</span></a></li>`).join("")
+      : `<li class="empty">커밋 기록을 읽지 못했어요</li>`;
+  }
+
+  fetch("data.json", { cache: "no-store" })
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(render)
+    .catch(() => {
+      const e = $("error");
+      e.hidden = false;
+      e.textContent = "data.json을 읽지 못했어요. 로컬에서는 `python3 scripts/build_site_data.py` 후 `cd site && python3 -m http.server`로 열어 주세요.";
+    });
+})();
+</script>
+</body>
+</html>
