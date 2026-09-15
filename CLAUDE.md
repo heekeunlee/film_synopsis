@@ -10,18 +10,18 @@
 
 ## 크루 구성 (9명 + 작가)
 
-| 역할 | 에이전트 | 정의 파일 | 트리거 | 모델 | 산출물 |
-|---|---|---|---|---|---|
-| **쇼러너 (사람)** | 작가 본인 | - | - | - | 결정, 최종 문장 |
-| 리서처 | researcher | `.claude/agents/researcher.md` | `/research [주제]` | sonnet(기본) | `research/` |
-| 기획 PD | planner | `.claude/agents/planner.md` | `/plan <아이디어 또는 "발굴">` | opus | `ideas/`, `planning/` |
-| 시나리오 작가 | writer | `.claude/agents/writer.md` | `/write [기획서 경로]` | opus | `drafts/` |
-| 심사위원 | critic | `.claude/agents/critic.md` | `/review [원고 경로]` | opus | `reviews/` |
-| 고문 (프로듀서) | advisor | `.claude/agents/advisor.md` | `/consult [작품]` | opus | `advisory/` |
-| 비주얼 디렉터 | designer | `.claude/agents/designer.md` | `/visual [작품]` | sonnet(기본) | `visual/`, `assets/`, `video/` |
-| 피칭 담당 | pitcher | `.claude/agents/pitcher.md` | `/pitch [작품]` | sonnet(기본) | `pitch/` |
-| 라인 PD (총무) | admin | `.claude/agents/admin.md` | `/audit` | sonnet(기본) | `admin/` |
-| 메이킹 기록자 | recorder | `.claude/agents/recorder.md` | `/log`, `/promptnote` | sonnet(기본) | `journal/`, `submission/` |
+| 역할 | 이름 | 에이전트 | 정의 파일 | 트리거 | 모델 | 산출물 |
+|---|---|---|---|---|---|---|
+| **쇼러너 (사람)** | 작가 | 작가 본인 | - | - | - | 결정, 최종 문장 |
+| 리서처 | 톰 Tom | researcher | `.claude/agents/researcher.md` | `/research [주제]` | sonnet(기본) | `research/` |
+| 기획 PD | 이선 Ethan | planner | `.claude/agents/planner.md` | `/plan <아이디어 또는 "발굴">` | opus | `ideas/`, `planning/` |
+| 시나리오 작가 | 한나 Hannah | writer | `.claude/agents/writer.md` | `/write [기획서 경로]` | opus | `drafts/` |
+| 심사위원 | 그레이스 Grace | critic | `.claude/agents/critic.md` | `/review [원고 경로]` | opus | `reviews/` |
+| 고문 (프로듀서) | 빅터 Victor | advisor | `.claude/agents/advisor.md` | `/consult [작품]` | opus | `advisory/` |
+| 비주얼 디렉터 | 루나 Luna | designer | `.claude/agents/designer.md` | `/visual [작품]` | sonnet(기본) | `visual/`, `assets/`, `video/` |
+| 피칭 담당 | 맥스 Max | pitcher | `.claude/agents/pitcher.md` | `/pitch [작품]` | sonnet(기본) | `pitch/` |
+| 라인 PD (총무) | 올리비아 Olivia | admin | `.claude/agents/admin.md` | `/audit` | sonnet(기본) | `admin/` |
+| 메이킹 기록자 | 샘 Sam | recorder | `.claude/agents/recorder.md` | `/log`, `/promptnote` | sonnet(기본) | `journal/`, `submission/` |
 
 발상(기획)·비평(심사)·시장 판단(고문)·완성도가 점수의 50%인 집필은 opus, 형식이 정해진 실행 업무는 기본 모델.
 사람 이름과 설정(`site/crew.json`)은 오피스 화면 연출이고, 실제로는 전부 Claude Code 서브에이전트다.
